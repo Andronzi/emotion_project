@@ -38,4 +38,3 @@ def emotions(image, frame):
             cv2.putText(frame, str(int(result[0][index]*100))+" %", (180, index * 40 + 40), cv2.FONT_HERSHEY_TRIPLEX,
                         1, (255, 0, 0), 2)
     return frame
-    
