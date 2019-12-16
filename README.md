@@ -88,4 +88,4 @@ Surface
 
 Также необходимо скачать файлы нейронной сети в корень каталога программы 
 
-https://drive.google.com/open?id=1-nrr8RoJLvX6v-OblMLLGVicNean0yqE
+https://drive.google.com/drive/folders/12KRnu7caIbMkU8vosafWObzfgGC6Vapw
