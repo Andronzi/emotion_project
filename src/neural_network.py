@@ -1,17 +1,9 @@
-
-from __future__ import division, absolute_import
-import re
-import sys
-import random
 import tflearn
 import numpy as np
-from os.path import isfile, join
-from tflearn.layers.merge_ops import merge
+from os.path import isfile
 from tflearn.layers.estimator import regression
-from tflearn.layers.conv import conv_2d, max_pool_2d, avg_pool_2d
-from tflearn.layers.normalization import local_response_normalization
-from tflearn.layers.core import input_data, dropout, fully_connected, flatten
-
+from tflearn.layers.conv import conv_2d, max_pool_2d
+from tflearn.layers.core import input_data, dropout, fully_connected
 
 class EMR:
 
@@ -56,4 +48,3 @@ class EMR:
 
 if __name__ == "__main__":
   network = EMR()
-#import run
