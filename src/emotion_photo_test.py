@@ -9,10 +9,9 @@ input_photo = 9
 
 
 def format_image(image):
-    if len(image.shape) > 2 and image.shape[2] == 3:
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    else:
-        image = cv2.imdecode(image, cv2.CV_LOAD_IMAGE_GRAYSCALE)
+
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
     faces = cascade_classifier.detectMultiScale(image, scaleFactor=1.3, minNeighbors=5)
     if not len(faces) > 0:
         return None
@@ -39,16 +38,15 @@ font = cv2.FONT_HERSHEY_SIMPLEX
 
 
 for k in range(1, input_photo):
-    img = cv2.imread("train/surprised/{}.jpg".format(k))
-    cv2.imshow("fds", img)
+    img = cv2.imread("../train/surprised/{}.jpg".format(k))
     result = network.predict(format_image(img))
-
+    
     if result is not None:
         for index, emotion in enumerate(EMOTIONS):
             cv2.putText(img, emotion, (10, index * 40 + 40), cv2.FONT_HERSHEY_TRIPLEX, 1, (255, 0, 0), 2)
             cv2.putText(img, str(int(result[0][index]*100))+" %", (180, index * 40 + 40), cv2.FONT_HERSHEY_TRIPLEX, 1,
                         (255, 0, 0), 2)
 
-    cv2.imwrite("train/surprised/{}.new.jpg".format(k), img)
+    cv2.imwrite("../train/surprised/{}.new.jpg".format(k), img)
 
 cv2.destroyAllWindows()
