@@ -1,0 +1,14 @@
+#import serial.serialwin32 as serial
+from serial import Serial
+import time
+
+ser = serial.Serial("COM4", 9600)
+ser.baudrate = 9600
+
+counter = "2"
+b = bytes(counter, 'utf-8')
+
+while True:
+    ser.write(b)  # отправка данных
+    data = ser.readline()  # принять данные
+    time.sleep(1)
