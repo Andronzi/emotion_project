@@ -263,7 +263,7 @@ def dots(img):
             cv2.putText(img, 'радость', (0, 50), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0))
         elif dot2x1 - dot1x1 <= rustxlef / 3.7:
             cv2.putText(img, 'злость', (0, 50), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0))
-        elif dotrigeyy - dot2y1 >= rustxlef / 3.5:
+        elif dotrigeyy - dot2y1 >= rustxlef / 3.3:
             cv2.putText(img, 'удивление', (0, 50), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0))
         else:
             cv2.putText(img, 'точки не совпадают', (0, 50), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0))
