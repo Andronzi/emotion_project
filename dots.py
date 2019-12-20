@@ -209,27 +209,62 @@ def happy(img):
         cv2.circle(img, (dotdoxe, dotdoye), 3, (0, 30, 175), -1)
 
 
-def happydots(img):
+def dots(img):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     detected_faces = face_detector(gray, 1)
     for c in detected_faces:
         shape = face_predictor(gray, c)
         shape = face_utils.shape_to_np(shape)
+        dotlef1 = shape[21]
+        dot1x1 = dotlef1[0]
+        dot1y1 = dotlef1[1]
+        dotlef = shape[17]
+        dot1xb = dotlef[0]
+        dot1yb = dotlef[1]
+        dotrig2 = shape[26]
+        dot2x2 = dotrig2[0]
+        dot2y2 = dotrig2[1]
+        dotrig1 = shape[22]
+        dot2x1 = dotrig1[0]
+        dot2y1 = dotrig1[1]
         dot1 = shape[48]
         dot1x = dot1[0]
         dot1y = dot1[1]
-        dotr = shape[52]
+        dotr = shape[51]
         dotrx = dotr[0]
         dotry = dotr[1]
         dot2 = shape[54]
         dot2x = dot2[0]
         dot2y = dot2[1]
-        cv2.circle(img, (dot1x, dot1y), 3, (0, 30, 175), -1)
-        cv2.circle(img, (dot2x, dot2y), 3, (0, 30, 175), -1)
-        cv2.circle(img, (dotrx, dotry), 3, (0, 30, 175), -1)
-        if dot2y <= dot1y + 4.5 and dot2y >= dot1y - 4.5 and dot2y >= dotry - 4.5 and dot2y >= dotry - 4.5:
+        dotrigey = shape[42]
+        dotrigeyx = dotrigey[0]
+        dotrigeyy = dotrigey[1]
+        dotdoe = shape[57]
+        dotdoxe = dotdoe[0]
+        dotdoye = dotdoe[1]
+        dotlefey3 = shape[39]
+        dotlefeyx3 = dotlefey3[0]
+        dotlefeyy3 = dotlefey3[1]
+
+        rustym = dotdoye - dotry
+        rustxm = dot2x - dot1x
+        rustxlef = dot2x1 - dot1xb
+        cv2.circle(img, (dotlefeyx3, dotlefeyy3), 3, (0, 255, 0), -1)
+        cv2.circle(img, (dotdoxe, dotdoye), 3, (0, 255, 0), -1)
+        cv2.circle(img, (dotrigeyx, dotrigeyy), 3, (0, 255, 0), -1)
+        cv2.circle(img, (dot2x1, dot2y1), 3, (0, 255, 0), -1)
+        cv2.circle(img, (dot1x1, dot1y1), 3, (0, 255, 0), -1)
+        cv2.circle(img, (dot2x2, dot2y2), 3, (0, 255, 0), -1)
+        cv2.circle(img, (dot1x, dot1y), 3, (0, 255, 0), -1)
+        cv2.circle(img, (dot1xb, dot1yb), 3, (0, 255, 0), -1)
+        cv2.circle(img, (dot2x, dot2y), 3, (0, 255, 0), -1)
+        cv2.circle(img, (dotrx, dotry), 3, (0, 255, 0), -1)
+        if rustxm >= rustym * 5:
             cv2.putText(img, 'радость', (0, 50), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0))
-        elif dot2y <= dot1y + 4.5 and dot2y >= dot1y - 4.5 and dot2y >= dotry - 4.5 and dot2y >= dotry - 4.5:
+        elif dot2x1 - dot1x1 <= rustxlef / 3.7:
             cv2.putText(img, 'злость', (0, 50), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0))
+        elif dotrigeyy - dot2y1 >= rustxlef / 3.3:
+            cv2.putText(img, 'удивление', (0, 50), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0))
         else:
             cv2.putText(img, 'точки не совпадают', (0, 50), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0))
+
