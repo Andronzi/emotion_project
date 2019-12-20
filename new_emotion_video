@@ -1,0 +1,60 @@
+import cv2
+from neural_network import EMR
+
+from serial import Serial
+import time
+
+ser = Serial("/dev/ttyUSB1", 115200, timeout=0.2)
+ser.baudrate = 115200
+
+EMOTIONS = ['angry', 'disgusted', 'fearful', 'happy', 'sad', 'surprised', 'neutral']
+
+cascade_classifier = cv2.CascadeClassifier('find-face-haar.xml')
+
+
+def format_image(image):
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    faces = cascade_classifier.detectMultiScale(image, scaleFactor=1.3, minNeighbors=5)
+    if not len(faces) > 0:
+        return None
+
+    max_area_face = faces[0]
+
+    for face in faces:
+        if face[2] * face[3] > max_area_face[2] * max_area_face[3]:
+            max_area_face = face
+    face = max_area_face
+    image = image[face[1]:(face[1] + face[2]), face[0]:(face[0] + face[3])]
+    image = cv2.resize(image, (48, 48), interpolation=cv2.INTER_CUBIC) / 255.
+    return image
+
+
+network = EMR()
+network.build_network()
+
+
+def emotions(image, frame, c):
+    result = network.predict(image)
+
+    if result is not None:
+        for index, emotion in enumerate(EMOTIONS):
+            cv2.putText(frame, emotion, (10, index * 40 + 40), cv2.FONT_HERSHEY_TRIPLEX, 1, (255, 0, 0), 2)
+            cv2.putText(frame, str(int(result[0][index]*100))+" %", (180, index * 40 + 40), cv2.FONT_HERSHEY_TRIPLEX,
+                        1, (255, 0, 0), 2)
+
+
+            while c<7:
+                data = ser.read()
+                data2 = ser.read()
+                pulse_nor = int.from_bytes(data, 'little')
+                KGR_nor = int.from_bytes(data2, 'little')
+                KGR_nor = 1 / KGR_nor  # KGR = 1/EAK
+                time.sleep(0.03)
+                c = c + 1
+            pulse_new = int.from_bytes(data, 'little')
+            KGR_new = int.from_bytes(data2, 'little')
+
+            cv2.putText(frame, "puls"+ str(pulse_nor),(10, 400), cv2.FONT_HERSHEY_TRIPLEX, 1, (255, 0, 0), 2)
+            cv2.putText(frame, "puls"+ str(KGR_nor), (10, 440), cv2.FONT_HERSHEY_TRIPLEX, 1, (255, 0, 0), 2)
+            
+    return frame
